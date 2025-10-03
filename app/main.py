@@ -3,11 +3,13 @@
 FastAPI + SQLAlchemy 2.0+ + Vanilla JS
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 
+from app.api.v1.api import api_router
 from app.core.config import settings
 
 
@@ -32,6 +34,9 @@ def create_application() -> FastAPI:
     
     # 静的ファイル設定
     app.mount("/static", StaticFiles(directory="static"), name="static")
+    
+    # APIルーター登録
+    app.include_router(api_router, prefix="/api/v1")
     
     return app
 
@@ -58,6 +63,12 @@ async def root():
 async def health_check():
     """ヘルスチェックエンドポイント"""
     return {"status": "healthy", "app": settings.app_name}
+
+
+@app.get("/menus", response_class=HTMLResponse)
+async def menus_page(request: Request):
+    """メニュー一覧ページ"""
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 # この時点では基本的なエンドポイントのみ

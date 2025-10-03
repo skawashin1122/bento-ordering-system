@@ -1,0 +1,48 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FastAPI App",
+      "type": "python",
+      "request": "launch",
+      "program": "/usr/local/bin/uvicorn",
+      "args": [
+        "app.main:app",
+        "--host", "0.0.0.0",
+        "--port", "8000",
+        "--reload"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "/app",
+      "env": {
+        "PYTHONPATH": "/app"
+      }
+    },
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "cwd": "/app",
+      "env": {
+        "PYTHONPATH": "/app"
+      }
+    },
+    {
+      "name": "Pytest: Current File",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "${file}",
+        "-v"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "/app",
+      "env": {
+        "PYTHONPATH": "/app"
+      }
+    }
+  ]
+}
