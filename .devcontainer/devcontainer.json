@@ -1,9 +1,10 @@
 {
-    "name": "Python 3 & Docker",
-    "dockerComposeFile": "../docker-compose.yml",
+    "name": "Bento Ordering System Dev Environment",
+    "dockerComposeFile": "docker-compose.yml",
     "service": "web",
-    "workspaceFolder": "/app",
+    "workspaceFolder": "/workspace",
     "shutdownAction": "stopCompose",
+    "remoteUser": "root",
     "features": {
         "ghcr.io/devcontainers/features/docker-in-docker:2": {},
         "ghcr.io/devcontainers/features/git:1": {},
@@ -58,6 +59,6 @@
             }
         }
     },
-    "postCreateCommand": "echo 'Container created! Ready for development'",
+    "postCreateCommand": "chmod +x .devcontainer/setup.sh && .devcontainer/setup.sh",
     "postStartCommand": "echo 'Container started! Services should be running on: Web:8000, DB:5432, pgAdmin:8080'"
 }

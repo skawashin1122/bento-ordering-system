@@ -4,14 +4,27 @@
 
 この環境は GitHub Codespaces で弁当注文システムの開発をするために最適化されています。
 
-### 自動セットアップ
+### 🛠️ Codespaces起動手順
 
-Codespaces が起動すると、以下が自動的に実行されます：
+1. **GitHub リポジトリで Codespaces を起動**
+   ```
+   Code → Codespaces → Create codespace on main
+   ```
 
-1. Docker Compose による各サービスの起動
-2. PostgreSQL データベースの初期化
-3. Alembic によるデータベースマイグレーション
-4. 開発用拡張機能の自動インストール
+2. **自動セットアップの確認**
+   - 環境構築スクリプトが自動実行されます
+   - 必要な拡張機能が自動インストールされます
+   - ワークスペースは `/workspace` にマウントされます
+
+3. **開発サーバー起動**
+   ```bash
+   # Docker Compose でサービス起動
+   docker-compose up -d
+   
+   # または、Pythonを直接実行
+   cd /workspace
+   uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+   ```
 
 ### 利用可能なサービス
 

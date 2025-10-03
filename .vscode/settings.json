@@ -3,6 +3,10 @@
     "python.terminal.activateEnvironment": false,
     "python.analysis.autoImportCompletions": true,
     "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.extraPaths": [
+        "/workspace",
+        "/workspace/app"
+    ],
     "python.formatting.provider": "black",
     "python.formatting.blackArgs": [
         "--line-length",

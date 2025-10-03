@@ -1,0 +1,76 @@
+services:
+  # PostgreSQLデータベース
+  db:
+    image: postgres:15
+    container_name: bento_db
+    environment:
+      POSTGRES_DB: bento_ordering
+      POSTGRES_USER: bento_user
+      POSTGRES_PASSWORD: bento_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bento_network
+
+  # FastAPIアプリケーション（Codespaces用）
+  web:
+    build: 
+      context: ..
+      dockerfile: Dockerfile
+    container_name: bento_web
+    ports:
+      - "8000:8000"
+    volumes:
+      # Codespaces: ワークスペース全体をマウント
+      - ..:/workspace
+      # アプリケーション作業ディレクトリ
+      - ../app:/app/app
+      - ../static:/app/static
+      - ../templates:/app/templates
+      - ../alembic:/app/alembic
+      - ../alembic.ini:/app/alembic.ini
+    working_dir: /workspace
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://bento_user:bento_password@db:5432/bento_ordering
+      - SECRET_KEY=your-secret-key-change-this-in-production
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - PYTHONPATH=/workspace:/app
+    depends_on:
+      - db
+    networks:
+      - bento_network
+    command: >
+      sh -c "
+        echo 'Waiting for database to be ready...' &&
+        until pg_isready -h db -p 5432 -U bento_user; do
+          echo 'Waiting for PostgreSQL...'
+          sleep 2
+        done &&
+        echo 'Running database migrations...' &&
+        cd /app &&
+        alembic upgrade head &&
+        echo 'Starting application...' &&
+        uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      "
+
+  # pgAdmin（データベース管理ツール）
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: bento_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    networks:
+      - bento_network
+
+volumes:
+  postgres_data:
+
+networks:
+  bento_network:
+    driver: bridge
