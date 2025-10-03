@@ -15,9 +15,9 @@
                 "--reload"
             ],
             "console": "integratedTerminal",
-            "cwd": "/workspace",
+            "cwd": "${workspaceFolder}",
             "env": {
-                "PYTHONPATH": "/workspace:/workspace/app"
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/app"
             }
         },
         {
@@ -26,9 +26,9 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "cwd": "/workspace",
+            "cwd": "${workspaceFolder}",
             "env": {
-                "PYTHONPATH": "/workspace:/workspace/app"
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/app"
             }
         },
         {
@@ -41,9 +41,9 @@
                 "-v"
             ],
             "console": "integratedTerminal",
-            "cwd": "/workspace",
+            "cwd": "${workspaceFolder}",
             "env": {
-                "PYTHONPATH": "/workspace:/workspace/app"
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/app"
             }
         }
     ]

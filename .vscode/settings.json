@@ -4,8 +4,8 @@
     "python.analysis.autoImportCompletions": true,
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.extraPaths": [
-        "/workspace",
-        "/workspace/app"
+        ".",
+        "./app"
     ],
     "python.formatting.provider": "black",
     "python.formatting.blackArgs": [

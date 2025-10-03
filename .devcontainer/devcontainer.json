@@ -1,7 +1,6 @@
 {
     "name": "Bento Ordering System",
     "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
-    "workspaceFolder": "/workspace",
     "features": {
         "ghcr.io/devcontainers/features/docker-in-docker:2": {}
     },
@@ -28,14 +27,14 @@
             "settings": {
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
                 "python.analysis.extraPaths": [
-                    "/workspace",
-                    "/workspace/app"
+                    "${containerWorkspaceFolder}",
+                    "${containerWorkspaceFolder}/app"
                 ],
                 "editor.formatOnSave": true,
                 "python.formatting.provider": "black"
             }
         }
     },
-    "postCreateCommand": "pip install -r requirements.txt",
+    "postCreateCommand": "pip install -r requirements.txt && chmod +x start_codespaces.sh && python test_codespaces.py",
     "remoteUser": "vscode"
 }
