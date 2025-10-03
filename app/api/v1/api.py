@@ -5,9 +5,12 @@ v1のエンドポイントをまとめる
 
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import menus, orders
+from app.api.v1.endpoints import auth, menus, orders
 
 api_router = APIRouter()
+
+# 認証関連のエンドポイント
+api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 
 # メニュー関連のエンドポイント
 api_router.include_router(menus.router, prefix="/menus", tags=["menus"])
