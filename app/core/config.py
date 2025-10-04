@@ -31,7 +31,6 @@ class Settings(BaseSettings):
     algorithm: str = Field(default="HS256", alias="ALGORITHM")
     access_token_expire_minutes: int = Field(
         default=30,
-        default=30,
         alias="ACCESS_TOKEN_EXPIRE_MINUTES"
     )
 
@@ -47,8 +46,8 @@ class Settings(BaseSettings):
     max_page_size: int = Field(default=100)
 
     # パスワードハッシュ設定
-    pwd_context_schemes: List[str] = Field(default=["bcrypt"])
-    pwd_context_deprecated: List[str] = Field(default=["auto"])
+    pwd_context_schemes: list[str] = Field(default=["bcrypt"])
+    pwd_context_deprecated: list[str] = Field(default=["auto"])
     refresh_token_expire_days: int = Field(default=7)
 
     class Config:
