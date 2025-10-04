@@ -4,28 +4,57 @@ let authToken = localStorage.getItem('authToken');
 // APIエンドポイント
 const API_URL = '/api/v1';
 
-// ダミーの認証処理（本番環境では実際のAPIを使用）
+// 本番環境の認証処理
 async function login(email, password) {
-    console.log('API通信中...');
-    await new Promise(r => setTimeout(r, 500)); // ネットワーク遅延を模倣
-    if (email === 'test@example.com' && password === 'password') {
-        const token = 'dummy-jwt-token-string';
-        localStorage.setItem('authToken', token);
-        return { access_token: token };
-    } else {
-        throw new Error('メールアドレスまたはパスワードが違います');
+    try {
+        const response = await fetch(`${API_URL}/auth/token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                username: email,
+                password: password,
+                grant_type: 'password'
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'ログインに失敗しました');
+        }
+
+        const data = await response.json();
+        localStorage.setItem('token', data.access_token);
+        return data;
+    } catch (error) {
+        console.error('ログインエラー:', error);
+        throw error;
     }
 }
 
 async function register(email, password) {
-    console.log('API通信中...');
-    await new Promise(r => setTimeout(r, 500)); // ネットワーク遅延を模倣
-    if (email && password) {
-        const token = 'dummy-jwt-token-string';
-        localStorage.setItem('authToken', token);
-        return { access_token: token };
-    } else {
-        throw new Error('登録に失敗しました');
+    try {
+        const response = await fetch(`${API_URL}/auth/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || '登録に失敗しました');
+        }
+
+        return await login(email, password);
+    } catch (error) {
+        console.error('登録エラー:', error);
+        throw error;
     }
 }
 

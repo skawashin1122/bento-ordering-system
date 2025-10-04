@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注文管理 - 弁当注文システム</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">弁当注文システム</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/orders">注文管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/menu">メニュー管理</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>注文管理</h2>
+        <div class="mb-3">
+            <button class="btn btn-primary" onclick="refreshOrders()">更新</button>
+        </div>
+
+        <!-- 注文フィルター -->
+        <div class="mb-3">
+            <label for="statusFilter" class="form-label">ステータスでフィルター:</label>
+            <select class="form-select" id="statusFilter" onchange="filterOrders()">
+                <option value="">全て</option>
+                <option value="PENDING">保留中</option>
+                <option value="PREPARING">準備中</option>
+                <option value="READY">準備完了</option>
+                <option value="DELIVERING">配達中</option>
+                <option value="DELIVERED">配達完了</option>
+                <option value="CANCELLED">キャンセル</option>
+            </select>
+        </div>
+
+        <!-- 注文一覧テーブル -->
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>注文ID</th>
+                        <th>注文日時</th>
+                        <th>お届け先</th>
+                        <th>ステータス</th>
+                        <th>合計金額</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="orderTableBody">
+                    <!-- 注文データはJavaScriptで動的に挿入 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 注文詳細モーダル -->
+        <div class="modal fade" id="orderDetailModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">注文詳細</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="orderDetailContent">
+                        <!-- 注文詳細はJavaScriptで動的に挿入 -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/admin_order.js"></script>
+</body>
+</html>

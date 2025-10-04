@@ -15,11 +15,13 @@ class Settings(BaseSettings):
     app_version: str = Field(default="0.1.0", alias="APP_VERSION")
     debug: bool = Field(default=False, alias="DEBUG")
 
+
     # データベース設定
     database_url: str = Field(
         default="postgresql+asyncpg://bento_user:bento_password@localhost:5432/bento_ordering",
         alias="DATABASE_URL"
     )
+
 
     # セキュリティ設定
     secret_key: str = Field(
@@ -29,21 +31,8 @@ class Settings(BaseSettings):
     algorithm: str = Field(default="HS256", alias="ALGORITHM")
     access_token_expire_minutes: int = Field(
         default=30,
+        default=30,
         alias="ACCESS_TOKEN_EXPIRE_MINUTES"
-    )
-    refresh_token_expire_days: int = Field(
-        default=7,
-        alias="REFRESH_TOKEN_EXPIRE_DAYS"
-    )
-
-    # パスワードハッシュ設定
-    pwd_context_schemes: list[str] = Field(
-        default=["bcrypt"],
-        alias="PWD_CONTEXT_SCHEMES"
-    )
-    pwd_context_deprecated: list[str] = Field(
-        default=["auto"],
-        alias="PWD_CONTEXT_DEPRECATED"
     )
 
     # CORS設定
@@ -52,9 +41,15 @@ class Settings(BaseSettings):
         alias="ALLOWED_ORIGINS"
     )
 
+
     # ページネーション設定
     default_page_size: int = Field(default=20)
     max_page_size: int = Field(default=100)
+
+    # パスワードハッシュ設定
+    pwd_context_schemes: List[str] = Field(default=["bcrypt"])
+    pwd_context_deprecated: List[str] = Field(default=["auto"])
+    refresh_token_expire_days: int = Field(default=7)
 
     class Config:
         env_file = ".env"
@@ -69,3 +64,4 @@ settings = Settings()
 def get_settings() -> Settings:
     """設定インスタンスを取得（依存性注入用）"""
     return settings
+
