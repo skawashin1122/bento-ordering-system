@@ -5,7 +5,6 @@ API_SPECS.mdの仕様に基づいたデータ構造定義
 
 from datetime import datetime
 from decimal import Decimal
-from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -20,10 +19,12 @@ class OrderItemCreate(BaseModel):
 
 class OrderCreate(BaseModel):
     """注文作成用スキーマ"""
-    items: List[OrderItemCreate] = Field(..., min_length=1, description="注文アイテム一覧")
-    delivery_address: str = Field(..., min_length=1, max_length=500, description="配達先住所")
-    delivery_time: Optional[datetime] = Field(None, description="希望配達時間")
-    notes: Optional[str] = Field(None, max_length=1000, description="注文備考")
+    items: list[OrderItemCreate] = Field(...,
+                                         min_length=1, description="注文アイテム一覧")
+    delivery_address: str = Field(..., min_length=1,
+                                  max_length=500, description="配達先住所")
+    delivery_time: datetime | None = Field(None, description="希望配達時間")
+    notes: str | None = Field(None, max_length=1000, description="注文備考")
 
 
 class OrderDetailResponse(BaseModel):
@@ -34,7 +35,7 @@ class OrderDetailResponse(BaseModel):
     quantity: int = Field(..., description="数量")
     unit_price: Decimal = Field(..., description="注文時の単価（円）")
     subtotal: Decimal = Field(..., description="小計（円）")
-    
+
     class Config:
         from_attributes = True
 
@@ -46,12 +47,12 @@ class OrderResponse(BaseModel):
     status: OrderStatus = Field(..., description="注文ステータス")
     total_amount: Decimal = Field(..., description="合計金額（円）")
     delivery_address: str = Field(..., description="配達先住所")
-    delivery_time: Optional[datetime] = Field(None, description="希望配達時間")
-    notes: Optional[str] = Field(None, description="注文備考")
-    items: List[OrderDetailResponse] = Field(..., description="注文詳細一覧")
+    delivery_time: datetime | None = Field(None, description="希望配達時間")
+    notes: str | None = Field(None, description="注文備考")
+    items: list[OrderDetailResponse] = Field(..., description="注文詳細一覧")
     created_at: datetime = Field(..., description="注文日時")
     updated_at: datetime = Field(..., description="更新日時")
-    
+
     class Config:
         from_attributes = True
 
@@ -62,17 +63,17 @@ class OrderSummaryResponse(BaseModel):
     status: OrderStatus = Field(..., description="注文ステータス")
     total_amount: Decimal = Field(..., description="合計金額（円）")
     delivery_address: str = Field(..., description="配達先住所")
-    delivery_time: Optional[datetime] = Field(None, description="希望配達時間")
+    delivery_time: datetime | None = Field(None, description="希望配達時間")
     created_at: datetime = Field(..., description="注文日時")
     items_count: int = Field(..., description="アイテム数")
-    
+
     class Config:
         from_attributes = True
 
 
 class OrderListResponse(BaseModel):
     """注文一覧レスポンス用スキーマ"""
-    items: List[OrderSummaryResponse] = Field(..., description="注文一覧")
+    items: list[OrderSummaryResponse] = Field(..., description="注文一覧")
     total: int = Field(..., ge=0, description="総件数")
     limit: int = Field(..., ge=1, description="取得件数")
     offset: int = Field(..., ge=0, description="開始位置")
@@ -90,7 +91,7 @@ class CartItem(BaseModel):
 
 class CartSummary(BaseModel):
     """カート情報サマリー"""
-    items: List[CartItem] = Field(..., description="カートアイテム一覧")
+    items: list[CartItem] = Field(..., description="カートアイテム一覧")
     total_amount: Decimal = Field(..., description="合計金額（円）")
     total_items: int = Field(..., description="総アイテム数")
 

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品管理 - 弁当注文システム</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- ヘッダー -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <i class="fas fa-utensils me-2"></i>弁当注文システム - 管理者
+                </a>
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/">
+                        <i class="fas fa-home me-1"></i>トップページ
+                    </a>
+                    <a class="nav-link" href="/admin/menu">
+                        <i class="fas fa-cog me-1"></i>商品管理
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 商品管理画面 -->
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fas fa-cog me-2"></i>商品管理</h2>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#menuModal" onclick="openMenuModal()">
+                        <i class="fas fa-plus me-1"></i>新規商品追加
+                    </button>
+                </div>
+
+                <!-- フィルタ・検索 -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label for="categoryFilter" class="form-label">カテゴリフィルタ</label>
+                                <select class="form-select" id="categoryFilter">
+                                    <option value="">すべてのカテゴリ</option>
+                                    <option value="main">メイン弁当</option>
+                                    <option value="side">サイドメニュー</option>
+                                    <option value="drink">ドリンク</option>
+                                    <option value="dessert">デザート</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="availabilityFilter" class="form-label">販売状況</label>
+                                <select class="form-select" id="availabilityFilter">
+                                    <option value="">すべて</option>
+                                    <option value="true">販売中</option>
+                                    <option value="false">販売停止</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="button" class="btn btn-outline-primary" onclick="applyFilters()">
+                                    <i class="fas fa-search me-1"></i>フィルタ適用
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary ms-2" onclick="clearFilters()">
+                                    <i class="fas fa-times me-1"></i>クリア
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品一覧テーブル -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">商品一覧</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>商品名</th>
+                                        <th>カテゴリ</th>
+                                        <th>価格</th>
+                                        <th>販売状況</th>
+                                        <th>作成日</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="menuTableBody">
+                                    <!-- JavaScriptで動的に生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- ページネーション -->
+                        <nav aria-label="ページネーション">
+                            <ul class="pagination justify-content-center" id="pagination">
+                                <!-- JavaScriptで動的に生成 -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 商品編集・新規作成モーダル -->
+    <div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="menuModalLabel">商品編集</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="menuForm">
+                        <input type="hidden" id="menuId" name="menuId">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="menuName" class="form-label">商品名 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="menuName" name="name" required maxlength="100">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="menuCategory" class="form-label">カテゴリ <span class="text-danger">*</span></label>
+                                <select class="form-select" id="menuCategory" name="category" required>
+                                    <option value="">カテゴリを選択</option>
+                                    <option value="main">メイン弁当</option>
+                                    <option value="side">サイドメニュー</option>
+                                    <option value="drink">ドリンク</option>
+                                    <option value="dessert">デザート</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="menuPrice" class="form-label">価格（円） <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="menuPrice" name="price" required min="0" step="1">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="menuImageUrl" class="form-label">画像URL</label>
+                                <input type="url" class="form-control" id="menuImageUrl" name="image_url" maxlength="500">
+                            </div>
+                            <div class="col-12">
+                                <label for="menuDescription" class="form-label">商品説明</label>
+                                <textarea class="form-control" id="menuDescription" name="description" rows="3" maxlength="1000"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="menuIsAvailable" name="is_available" checked>
+                                    <label class="form-check-label" for="menuIsAvailable">
+                                        販売可能
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-primary" onclick="saveMenu()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 削除確認モーダル -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">削除確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>この商品を削除してもよろしいですか？</p>
+                    <p><strong id="deleteMenuName"></strong></p>
+                    <p class="text-muted">※ この操作は取り消せません。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">削除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- アラート表示エリア -->
+    <div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+        <!-- JavaScriptで動的に生成 -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/admin_menu.js"></script>
+</body>
+</html>
