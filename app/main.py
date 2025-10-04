@@ -8,6 +8,7 @@ import logging
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -21,12 +22,14 @@ logging.basicConfig(level=logging.DEBUG)
 def create_application() -> FastAPI:
     """FastAPIアプリケーションを作成"""
 
+
     app = FastAPI(
         title=settings.app_name,
         version=settings.app_version,
         description="弁当注文管理システムのAPI",
         debug=True,  # 強制的にデバッグモードを有効化
     )
+
 
     # CORS設定
     app.add_middleware(
@@ -37,11 +40,14 @@ def create_application() -> FastAPI:
         allow_headers=["*"],
     )
 
+
     # 静的ファイル設定
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
+
     # APIルーター登録
     app.include_router(api_router, prefix="/api/v1")
+
 
     return app
 
@@ -96,3 +102,4 @@ async def login_page(request: Request):
 
 # この時点では基本的なエンドポイントのみ
 # フェーズ1で各担当者がAPIエンドポイントを追加していきます
+
