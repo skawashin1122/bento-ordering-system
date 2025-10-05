@@ -13,6 +13,7 @@ from app.db.models import MenuCategory
 
 class MenuBase(BaseModel):
     """メニューの基本スキーマ"""
+
     name: str = Field(..., min_length=1, max_length=100, description="商品名")
     description: str | None = Field(None, max_length=1000, description="商品説明")
     price: Decimal = Field(..., ge=0, description="価格（円）")
@@ -23,13 +24,14 @@ class MenuBase(BaseModel):
 
 class MenuCreate(MenuBase):
     """メニュー作成用スキーマ"""
+
     pass
 
 
 class MenuUpdate(BaseModel):
     """メニュー更新用スキーマ"""
-    name: str | None = Field(
-        None, min_length=1, max_length=100, description="商品名")
+
+    name: str | None = Field(None, min_length=1, max_length=100, description="商品名")
     description: str | None = Field(None, max_length=1000, description="商品説明")
     price: Decimal | None = Field(None, ge=0, description="価格（円）")
     category: MenuCategory | None = Field(None, description="カテゴリ")
@@ -39,6 +41,7 @@ class MenuUpdate(BaseModel):
 
 class MenuResponse(MenuBase):
     """メニューレスポンス用スキーマ"""
+
     id: int = Field(..., description="メニューID")
     created_at: datetime = Field(..., description="作成日時")
     updated_at: datetime = Field(..., description="更新日時")
@@ -49,6 +52,7 @@ class MenuResponse(MenuBase):
 
 class MenuListResponse(BaseModel):
     """メニュー一覧レスポンス用スキーマ"""
+
     items: list[MenuResponse] = Field(..., description="メニュー一覧")
     total: int = Field(..., ge=0, description="総件数")
     limit: int = Field(..., ge=1, description="取得件数")
