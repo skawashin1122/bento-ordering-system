@@ -6,7 +6,7 @@ API_SPECS.mdの仕様に基づいたデータ構造定義
 from datetime import datetime
 from decimal import Decimal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.db.models import MenuCategory
 
@@ -46,8 +46,7 @@ class MenuResponse(MenuBase):
     created_at: datetime = Field(..., description="作成日時")
     updated_at: datetime = Field(..., description="更新日時")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MenuListResponse(BaseModel):

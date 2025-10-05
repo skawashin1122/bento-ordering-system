@@ -6,7 +6,7 @@
 from datetime import datetime
 from decimal import Decimal
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from app.db.models import OrderStatus
 
@@ -27,8 +27,7 @@ class AdminOrderSummaryResponse(BaseModel):
     created_at: datetime = Field(..., description="注文日時")
     updated_at: datetime = Field(..., description="更新日時")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AdminOrderDetailResponse(BaseModel):
@@ -41,8 +40,7 @@ class AdminOrderDetailResponse(BaseModel):
     unit_price: Decimal = Field(..., description="注文時の単価（円）")
     subtotal: Decimal = Field(..., description="小計（円）")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AdminOrderResponse(BaseModel):
@@ -61,8 +59,7 @@ class AdminOrderResponse(BaseModel):
     created_at: datetime = Field(..., description="注文日時")
     updated_at: datetime = Field(..., description="更新日時")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AdminOrderListResponse(BaseModel):
@@ -87,8 +84,7 @@ class OrderStatusUpdateResponse(BaseModel):
     status: OrderStatus = Field(..., description="更新された注文ステータス")
     updated_at: datetime = Field(..., description="更新日時")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class PopularMenuStat(BaseModel):

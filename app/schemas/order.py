@@ -6,7 +6,7 @@ API_SPECS.mdの仕様に基づいたデータ構造定義
 from datetime import datetime
 from decimal import Decimal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.db.models import OrderStatus
 
@@ -41,8 +41,7 @@ class OrderDetailResponse(BaseModel):
     unit_price: Decimal = Field(..., description="注文時の単価（円）")
     subtotal: Decimal = Field(..., description="小計（円）")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OrderResponse(BaseModel):
@@ -59,8 +58,7 @@ class OrderResponse(BaseModel):
     created_at: datetime = Field(..., description="注文日時")
     updated_at: datetime = Field(..., description="更新日時")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OrderSummaryResponse(BaseModel):
@@ -74,8 +72,7 @@ class OrderSummaryResponse(BaseModel):
     created_at: datetime = Field(..., description="注文日時")
     items_count: int = Field(..., description="アイテム数")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class OrderListResponse(BaseModel):

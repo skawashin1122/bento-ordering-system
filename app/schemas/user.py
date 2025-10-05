@@ -3,7 +3,7 @@
 API_SPECS.mdの仕様に基づいたデータ構造定義
 """
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from app.db.models import UserRole
 
@@ -32,8 +32,7 @@ class UserResponse(BaseModel):
     name: str = Field(..., description="ユーザー名")
     role: UserRole = Field(..., description="ユーザーロール")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserInDB(BaseModel):
@@ -46,8 +45,7 @@ class UserInDB(BaseModel):
     role: UserRole
     is_active: bool
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Token(BaseModel):
