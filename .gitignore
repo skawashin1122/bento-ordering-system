@@ -155,8 +155,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # Alembic
-alembic/versions/*.py
-!alembic/versions/.gitkeep
+# Migration files should be committed
+# alembic/versions/*.py
+# !alembic/versions/.gitkeep
 
 # Database
 *.db
